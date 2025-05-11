@@ -1,0 +1,36 @@
+@media print {
+  /* Cacher les éléments de navigation et les boutons lors de l'impression */
+  nav,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Assurer que le contenu s'affiche correctement */
+  body {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Styles pour le contenu à imprimer */
+  .print-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Éviter les sauts de page à l'intérieur des sections importantes */
+  .print-section {
+    page-break-inside: avoid;
+  }
+
+  /* Forcer l'affichage des couleurs */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
