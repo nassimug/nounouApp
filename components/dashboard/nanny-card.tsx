@@ -111,7 +111,7 @@ export function NannyCard({ nanny }: NannyCardProps) {
             <Link href={`/dashboard/famille/nanny/${nanny.id}`}>Voir le profil</Link>
           </Button>
           <Button variant="outline" className="flex-1 border-[#4FC3F7] text-[#4FC3F7] hover:bg-[#4FC3F7]/10" asChild>
-            <Link href={`/dashboard/famille/messages/${nanny.id}`}>
+            <Link href={`/dashboard/famille/messages?open=${nanny.id}`}>
               <MessageSquare className="h-4 w-4 mr-2" />
               Contacter
             </Link>

@@ -9,11 +9,15 @@ import { FamilyNavigation } from "@/components/dashboard/family-navigation"
 import { Calendar, Clock, MessageSquare, User, MapPin, CheckCircle, XCircle } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { PayslipGenerator } from "@/components/dashboard/payslip-generator"
+import { ReviewForm } from "@/components/dashboard/review-form"
 
 // Données fictives pour les réservations
 const reservations = [
   {
     id: 1,
+    nannyId: 1,
     nannyName: "Sophie Martin",
     nannyImage: "/placeholder.svg?height=50&width=50",
     date: "12 mai 2025",
@@ -25,6 +29,7 @@ const reservations = [
   },
   {
     id: 2,
+    nannyId: 2,
     nannyName: "Marie Dubois",
     nannyImage: "/placeholder.svg?height=50&width=50",
     date: "15 mai 2025",
@@ -36,6 +41,7 @@ const reservations = [
   },
   {
     id: 3,
+    nannyId: 3,
     nannyName: "Camille Leroy",
     nannyImage: "/placeholder.svg?height=50&width=50",
     date: "5 mai 2025",
@@ -47,6 +53,7 @@ const reservations = [
   },
   {
     id: 4,
+    nannyId: 4,
     nannyName: "Julie Moreau",
     nannyImage: "/placeholder.svg?height=50&width=50",
     date: "28 avril 2025",
@@ -58,6 +65,7 @@ const reservations = [
   },
   {
     id: 5,
+    nannyId: 5,
     nannyName: "Emma Bernard",
     nannyImage: "/placeholder.svg?height=50&width=50",
     date: "10 avril 2025",
@@ -71,10 +79,23 @@ const reservations = [
 
 export default function FamilyReservationsPage() {
   const [activeTab, setActiveTab] = useState("upcoming")
+  const [isPayslipDialogOpen, setIsPayslipDialogOpen] = useState(false)
+  const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false)
+  const [selectedReservation, setSelectedReservation] = useState<any>(null)
 
   const upcomingReservations = reservations.filter((r) => r.status === "upcoming")
   const completedReservations = reservations.filter((r) => r.status === "completed")
   const cancelledReservations = reservations.filter((r) => r.status === "cancelled")
+
+  const handleGeneratePayslip = (reservation: any) => {
+    setSelectedReservation(reservation)
+    setIsPayslipDialogOpen(true)
+  }
+
+  const handleLeaveReview = (reservation: any) => {
+    setSelectedReservation(reservation)
+    setIsReviewDialogOpen(true)
+  }
 
   return (
     <div className="min-h-screen bg-[#FCE4EC]/30">
@@ -157,7 +178,7 @@ export default function FamilyReservationsPage() {
 
                         <div className="flex flex-col sm:flex-row gap-2">
                           <Button className="bg-[#FF80AB] hover:bg-[#FF4081] text-white" asChild>
-                            <Link href={`/dashboard/famille/messages/${reservation.id}`}>
+                            <Link href={`/dashboard/famille/messages?open=${reservation.nannyId}`}>
                               <MessageSquare className="h-4 w-4 mr-2" />
                               Contacter
                             </Link>
@@ -241,11 +262,18 @@ export default function FamilyReservationsPage() {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-2">
-                          <Button className="bg-[#81C784] hover:bg-[#66BB6A] text-white">
+                          <Button
+                            className="bg-[#81C784] hover:bg-[#66BB6A] text-white"
+                            onClick={() => handleGeneratePayslip(reservation)}
+                          >
                             <CheckCircle className="h-4 w-4 mr-2" />
                             Générer fiche de paie
                           </Button>
-                          <Button variant="outline" className="border-[#FF80AB] text-[#FF80AB]">
+                          <Button
+                            variant="outline"
+                            className="border-[#FF80AB] text-[#FF80AB]"
+                            onClick={() => handleLeaveReview(reservation)}
+                          >
                             Laisser un avis
                           </Button>
                         </div>
@@ -339,6 +367,26 @@ export default function FamilyReservationsPage() {
           </TabsContent>
         </Tabs>
       </main>
+
+      {/* Dialog pour générer une fiche de paie */}
+      <Dialog open={isPayslipDialogOpen} onOpenChange={setIsPayslipDialogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <PayslipGenerator onClose={() => setIsPayslipDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog pour laisser un avis */}
+      <Dialog open={isReviewDialogOpen} onOpenChange={setIsReviewDialogOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          {selectedReservation && (
+            <ReviewForm
+              nannyName={selectedReservation.nannyName}
+              nannyId={selectedReservation.nannyId}
+              onClose={() => setIsReviewDialogOpen(false)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

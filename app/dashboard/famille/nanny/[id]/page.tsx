@@ -144,7 +144,7 @@ export default function NannyProfilePage() {
               {isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
             </Button>
             <Button className="bg-[#FF80AB] hover:bg-[#FF4081] text-white" asChild>
-              <Link href={`/dashboard/famille/messages/${nanny.id}`}>
+              <Link href={`/dashboard/famille/messages?open=${nanny.id}`}>
                 <MessageSquare className="h-4 w-4 mr-2" />
                 Contacter
               </Link>

@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { NannyNavigation } from "@/components/dashboard/nanny-navigation"
 import { MessageList } from "@/components/dashboard/message-list"
 import { MessageChat } from "@/components/dashboard/message-chat"
 import { Search } from "lucide-react"
+import { useSearchParams } from "next/navigation"
 
 // Données fictives pour les conversations
 const conversations = [
@@ -45,9 +46,22 @@ const conversations = [
 ]
 
 export default function NannyMessagesPage() {
+  const searchParams = useSearchParams()
+  const openConversationId = searchParams.get("open")
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedConversation, setSelectedConversation] = useState<number | null>(null)
   const [isMobileView, setIsMobileView] = useState(false)
+
+  useEffect(() => {
+    if (openConversationId) {
+      const conversationId = Number.parseInt(openConversationId)
+      const conversation = conversations.find((c) => c.id === conversationId)
+      if (conversation) {
+        setSelectedConversation(conversationId)
+        setIsMobileView(true)
+      }
+    }
+  }, [openConversationId])
 
   const filteredConversations = conversations.filter((conversation) =>
     conversation.name.toLowerCase().includes(searchTerm.toLowerCase()),

@@ -28,6 +28,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog"
 const requests = [
   {
     id: 1,
+    familyId: 1,
     family: "Famille Dupont",
     children: 2,
     date: "12 mai 2025",
@@ -36,6 +37,7 @@ const requests = [
   },
   {
     id: 2,
+    familyId: 2,
     family: "Famille Martin",
     children: 1,
     date: "15 mai 2025",
@@ -44,6 +46,7 @@ const requests = [
   },
   {
     id: 3,
+    familyId: 3,
     family: "Famille Bernard",
     children: 3,
     date: "20 mai 2025",
@@ -371,7 +374,7 @@ export default function NannyDashboard() {
 
                           <div className="flex gap-2">
                             <Button className="flex-1 bg-[#4FC3F7] hover:bg-[#29B6F6] text-white" asChild>
-                              <Link href={`/dashboard/nounou/messages/${request.id}`}>
+                              <Link href={`/dashboard/nounou/messages?open=${request.familyId}`}>
                                 <MessageSquare className="h-4 w-4 mr-2" />
                                 Contacter
                               </Link>
