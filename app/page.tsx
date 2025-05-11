@@ -31,7 +31,10 @@ export default function Home() {
             <Button variant="ghost" className="text-gray-600 hover:text-[#FF80AB] hover:bg-[#FF80AB]/10">
               Contact
             </Button>
+            <Link href="/auth/login">
             <Button className="bg-[#4FC3F7] hover:bg-[#29B6F6] text-white rounded-full">Se connecter</Button>
+          </Link>
+            
           </div>
         </div>
       </header>
